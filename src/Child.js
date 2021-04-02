@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
+import "react-nice-dates/build/style.css";
+import React from "react";
 
 const Child = (props) => {
-  const [data, setData] = React.useState("");
-
-  const changeFunc = (_data) => {
-    setData(_data);
-    props.parentCallBack(data);
-  };
-
   return (
-    <>
+    <div>
       <input
         type="text"
-        onChange={(event) => {
-          changeFunc(event.target.value);
-        }}
+        onChange={(event) => props.parentCallback(event.target.value)}
       />
-      <div> child: {data}</div>
-    </>
+    </div>
   );
 };
 
