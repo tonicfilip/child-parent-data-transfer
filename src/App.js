@@ -1,27 +1,23 @@
+import axios from "axios";
 import React, { useEffect } from "react";
 import Child from "./Child";
 
 function App() {
   const [childData, setChildData] = React.useState("");
-  const [_data, setData] = React.useState();
-  const API = `https://jsonplaceholder.typicode.com/todos/1`;
+  const [posts, setPosts] = React.useState([]);
 
-  // useEffect(() => {
-  //   setChildData()
+  useEffect(() => {
+    getData();
+  }, []);
 
-  //   fetch(todo)
-  //     .then((res) => res.json())
-  //     .then((results) => {
-  //       setAppState({ loading: false, results: results });
-  //     });
-  // }, [setAppState]);
-
-  const getData = (ID) => {
-    fetch(`https://jsonplaceholder.typicode.com/todos/${ID}`)
-      .then((res) => res.json())
-      .then((results) => {
-        setData(results);
-      });
+  const getData = () => {
+    axios
+      .get(`https://jsonplaceholder.typicode.com/todos`)
+      .then((res) => {
+        setPosts(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -30,11 +26,20 @@ function App() {
         onChange={() => console.log("HHH")}
         parentCallback={(data) => {
           setChildData(data);
-          getData(data);
         }}
       />
       PARENT: {childData}
       <br />
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id}>
+            title: {post.title},
+            <br />
+            completed: {post.completed}
+            userId: {post.userId}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
